@@ -22,7 +22,7 @@ public class UI_ButtonPlaySound : MonoBehaviour
 
     bool mStarted = false;
 
-    void Start()
+    void Awake()
     {
         if(!mStarted)
         {

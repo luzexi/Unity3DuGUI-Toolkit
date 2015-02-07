@@ -27,11 +27,6 @@ public class UI_TweenPosition : UI_Tween
 
     void Awake()
     {
-        //
-    }
-
-    void Start()
-    {
         if(tweenTarget == null) tweenTarget = this.gameObject;
         this.m_fStartTime = Time.realtimeSinceStartup;
         this.m_delEase = GetEasingFunction(easeType);
@@ -90,6 +85,23 @@ public class UI_TweenPosition : UI_Tween
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// Start the tweening operation.
+    /// </summary>
+    static public UI_TweenPosition Begin(GameObject go, float duration, Vector3 pos)
+    {
+        UI_TweenPosition comp = UI_Tween.Begin<UI_TweenPosition>(go);
+        comp.duration = duration;
+        comp.to = pos;
+
+        if (duration <= 0f)
+        {
+            comp.tweenTarget.transform.localPosition = pos;
+            comp.enabled = false;
+        }
+        return comp;
     }
 
 }

@@ -31,64 +31,21 @@ public class UI_ButtonColor : MonoBehaviour
     /// <summary>
     /// Duration of the tween process.
     /// </summary>
-    public float duration = 0.2f;
+    public float duration = 0f;
 
     Color mColor;
     Image mImage;
     bool mStarted = false;
-    bool m_bStartTween = false;
-    float m_fStartTime = -1;
-    
 
-    /// <summary>
-    /// UI_ButtonColor's default (starting) color. It's useful to be able to change it, just in case.
-    /// </summary>
-    public Color defaultColor
-    {
-        get
-        {
-            Start();
-            return mColor;
-        }
-        set
-        {
-            Start();
-            mColor = value;
-        }
-    }
-
-    void Start ()
+    void Awake ()
     {
         if (!mStarted)
         {
             mStarted = true;
             Init();
             var ev = UI_Event.Get(tweenTarget);
-            ev.onClick += OnClick;
-        }
-    }
-
-    void Update()
-    {
-        if( this.m_bStartTween )
-        {
-            float disTime = Time.realtimeSinceStartup - this.m_fStartTime;
-            float rate = disTime / duration;
-            if( rate > 1f )
-                rate = 1f;
-            if(rate >= 1f)
-            {
-                this.m_bStartTween = false;
-                if(this.mImage != null)
-                    this.mImage.color = mColor;
-            }
-            else
-            {
-                if( rate >= 0.5f )
-                    rate = 1f - rate;
-                if(this.mImage != null)
-                    this.mImage.color = Color.Lerp( mColor , pressed , rate );
-            }
+            ev.onDown += OnDown;
+            ev.onUp += OnUp;
         }
     }
 
@@ -112,20 +69,19 @@ public class UI_ButtonColor : MonoBehaviour
         }
     }
 
-    void OnClick ( PointerEventData eventData , GameObject go , string[] args )
+    void OnDown ( PointerEventData eventData , GameObject go , string[] args )
     {
         if (enabled)
         {
-            if (!mStarted) Start();
-            this.m_bStartTween = true;
-            this.m_fStartTime = Time.realtimeSinceStartup;
-            if( this.mImage != null )
-                this.mImage.color = mColor;
-            if(duration <= 0)
-            {
-                if( this.mImage != null )
-                    this.mImage.color = pressed;
-            }
+            UI_TweenColor.Begin(tweenTarget , duration , pressed);
+        }
+    }
+
+    void OnUp ( PointerEventData eventData , GameObject go , string[] args )
+    {
+        if (enabled)
+        {
+            UI_TweenColor.Begin(tweenTarget , duration , mColor).from = pressed;
         }
     }
 }

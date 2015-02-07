@@ -11,15 +11,12 @@ public class UI_ButtonOffset : MonoBehaviour
     public Transform tweenTarget;
     public Vector3 hover = Vector3.zero;
     public Vector3 pressed = new Vector3(2f, -2f);
-    public float duration = 0.1f;
+    public float duration = 0f;
 
     Vector3 mPos;
     bool mStarted = false;
 
-    bool m_bStartTween = false;
-    float m_fStartTime = -1f;
-
-    void Start ()
+    void Awake ()
     {
         if (!mStarted)
         {
@@ -27,29 +24,8 @@ public class UI_ButtonOffset : MonoBehaviour
             if (tweenTarget == null) tweenTarget = transform;
             mPos = tweenTarget.localPosition;
             var ev = UI_Event.Get(tweenTarget);
-            ev.onClick += OnClick;
-        }
-    }
-
-    void Update()
-    {
-        if( this.m_bStartTween )
-        {
-            float disTime = Time.realtimeSinceStartup - this.m_fStartTime;
-            float rate = disTime / duration;
-            if( rate > 1f )
-                rate = 1f;
-            if(rate >= 1f)
-            {
-                this.m_bStartTween = false;
-                this.tweenTarget.localPosition = mPos;
-            }
-            else
-            {
-                if( rate >= 0.5f )
-                    rate = 1f - rate;
-                 this.tweenTarget.localPosition = Vector3.Lerp( mPos , pressed , rate );
-            }
+            ev.onDown += OnDown;
+            ev.onUp += OnUp;
         }
     }
 
@@ -66,16 +42,19 @@ public class UI_ButtonOffset : MonoBehaviour
         }
     }
 
-    void OnClick (PointerEventData eventData , GameObject go , string[] args)
+    void OnDown ( PointerEventData eventData , GameObject go , string[] args )
     {
         if (enabled)
         {
-            if (!mStarted) Start();
-            this.m_bStartTween = true;
-            this.m_fStartTime = Time.realtimeSinceStartup;
-            tweenTarget.localPosition = mPos;
-            if(duration <= 0)
-                tweenTarget.localPosition = pressed;
+            UI_TweenPosition.Begin(tweenTarget.gameObject , duration , mPos + pressed);
+        }
+    }
+
+    void OnUp ( PointerEventData eventData , GameObject go , string[] args )
+    {
+        if (enabled)
+        {
+            UI_TweenPosition.Begin(tweenTarget.gameObject , duration , mPos).from = mPos + pressed;
         }
     }
 }

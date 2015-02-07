@@ -20,12 +20,13 @@ public class UI_TweenColor : UI_Tween
     public float duration = 1f;
     public EaseType easeType = EaseType.easeOutExpo;
 
+    [HideInInspector]
+    public Image m_cImage; //image
     float m_fStartTime; //start time
-    Image m_cImage; //image
     EasingFunction m_delEase;   //delegate function
 
 
-    void Start()
+    void Awake()
     {
         if(tweenTarget == null) tweenTarget = this.gameObject;
         this.m_fStartTime = Time.realtimeSinceStartup;
@@ -70,6 +71,24 @@ public class UI_TweenColor : UI_Tween
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// Start the tweening operation.
+    /// </summary>
+    static public UI_TweenColor Begin (GameObject go, float duration, Color color)
+    {
+        UI_TweenColor comp = UI_Tween.Begin<UI_TweenColor>(go);
+        comp.duration = duration;
+        comp.to = color;
+
+        if (duration <= 0f)
+        {
+            if( comp.m_cImage != null )
+                comp.m_cImage.color = color;
+            comp.enabled = false;
+        }
+        return comp;
     }
 
 }

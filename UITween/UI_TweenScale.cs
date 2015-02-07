@@ -17,7 +17,7 @@ public class UI_TweenScale : UI_Tween
     public bool fromnow = true;
     public Vector3 from = Vector3.zero;
     public Vector3 to = Vector3.one;
-    public LoopType loop = LoopType.PingPong;
+    public LoopType loop = LoopType.Once;
     public float duration = 1f;
     public EaseType easeType = EaseType.easeOutExpo;
 
@@ -25,11 +25,6 @@ public class UI_TweenScale : UI_Tween
     EasingFunction m_delEase;   //delegate function
 
     void Awake()
-    {
-        //
-    }
-
-    void Start()
     {
         if(tweenTarget == null) tweenTarget = this.gameObject;
         this.m_fStartTime = Time.realtimeSinceStartup;
@@ -77,6 +72,23 @@ public class UI_TweenScale : UI_Tween
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// Start the tweening operation.
+    /// </summary>
+    static public UI_TweenScale Begin (GameObject go, float duration, Vector3 scale)
+    {
+        UI_TweenScale comp = UI_Tween.Begin<UI_TweenScale>(go);
+        comp.duration = duration;
+        comp.to = scale;
+
+        if (duration <= 0f)
+        {
+            comp.tweenTarget.transform.localScale = scale;
+            comp.enabled = false;
+        }
+        return comp;
     }
 
 }

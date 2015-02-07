@@ -14,15 +14,12 @@ public class UI_ButtonScale : MonoBehaviour
     public Transform tweenTarget;
     public Vector3 hover = Vector3.one;
     public Vector3 pressed = new Vector3(0.95f, 0.95f, 0.95f);
-    public float duration = 0.1f;
+    public float duration = 0f;
 
     Vector3 mScale;
     bool mStarted = false;
 
-    bool m_bStartTween = false;
-    float m_fStartTime = -1f;
-
-    void Start ()
+    void Awake ()
     {
         if (!mStarted)
         {
@@ -30,29 +27,8 @@ public class UI_ButtonScale : MonoBehaviour
             if (tweenTarget == null) tweenTarget = transform;
             mScale = tweenTarget.localScale;
             var ev = UI_Event.Get(tweenTarget);
-            ev.onClick += OnClick;
-        }
-    }
-
-    void Update()
-    {
-        if( this.m_bStartTween )
-        {
-            float disTime = Time.realtimeSinceStartup - this.m_fStartTime;
-            float rate = disTime / duration;
-            if( rate > 1f )
-                rate = 1f;
-            if(rate >= 1f)
-            {
-                this.m_bStartTween = false;
-                this.tweenTarget.localScale = mScale;
-            }
-            else
-            {
-                if( rate >= 0.5f )
-                    rate = 1f - rate;
-                 tweenTarget.localScale = Vector3.Lerp( mScale , pressed , rate );
-            }
+            ev.onDown += OnDown;
+            ev.onUp += OnUp;
         }
     }
 
@@ -64,16 +40,19 @@ public class UI_ButtonScale : MonoBehaviour
         }
     }
 
-    void OnClick ( PointerEventData eventData , GameObject go , string[] args )
+    void OnDown ( PointerEventData eventData , GameObject go , string[] args )
     {
         if (enabled)
         {
-            if (!mStarted) Start();
-            this.m_bStartTween = true;
-            this.m_fStartTime = Time.realtimeSinceStartup;
-            tweenTarget.localScale = mScale;
-            if(duration <= 0)
-                tweenTarget.localScale = pressed;
+            UI_TweenScale.Begin(tweenTarget.gameObject , duration , pressed);
+        }
+    }
+
+    void OnUp ( PointerEventData eventData , GameObject go , string[] args )
+    {
+        if (enabled)
+        {
+            UI_TweenScale.Begin(tweenTarget.gameObject , duration , mScale).from = pressed;
         }
     }
 }
