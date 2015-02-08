@@ -36,20 +36,6 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
     public BaseEventDelegate onSelect = null;
     public BaseEventDelegate onUpdateSelect = null;
 
-    public static UI_Event Get(GameObject go)
-    {
-        return Get(go,"");
-    }
-
-    public static UI_Event Get(GameObject go , string args)
-    {
-        UI_Event listener = go.GetComponent<UI_Event>();
-        if (listener == null) listener = go.AddComponent<UI_Event>();
-        if(!string.IsNullOrEmpty(args))
-            listener.m_vecArg = args.Split(new char[]{';'});
-        return listener;
-    }
-
     public static UI_Event Get(Transform go)
     {
         return Get(go,"");
@@ -57,11 +43,7 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
 
     public static UI_Event Get(Transform go , string args)
     {
-        UI_Event listener = go.GetComponent<UI_Event>();
-        if (listener == null) listener = go.gameObject.AddComponent<UI_Event>();
-        if(!string.IsNullOrEmpty(args))
-            listener.m_vecArg = args.Split(new char[]{';'});
-        return listener;
+        return Get(go.gameObject , args);
     }
 
     public static UI_Event Get(MonoBehaviour go)
@@ -71,8 +53,18 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
 
     public static UI_Event Get(MonoBehaviour go , string args)
     {
+        return Get(go.gameObject,args);
+    }
+
+    public static UI_Event Get(GameObject go)
+    {
+        return Get(go,"");
+    }
+
+    public static UI_Event Get(GameObject go , string args)
+    {
         UI_Event listener = go.GetComponent<UI_Event>();
-        if (listener == null) listener = go.gameObject.AddComponent<UI_Event>();
+        if (listener == null) listener = go.AddComponent<UI_Event>();
         if(!string.IsNullOrEmpty(args))
             listener.m_vecArg = args.Split(new char[]{';'});
         return listener;
