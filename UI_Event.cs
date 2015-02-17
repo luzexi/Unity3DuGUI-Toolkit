@@ -14,7 +14,6 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// ui event.
 /// </summary>
-[CustomLuaClassAttribute]
 public class UI_Event : UnityEngine.EventSystems.EventTrigger
 {
     public delegate void PointerEventDelegate ( PointerEventData eventData , GameObject go , string[] args );
