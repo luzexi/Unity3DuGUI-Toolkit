@@ -23,7 +23,7 @@ public class UI_Scroll_Horizontal_List : MonoBehaviour
     public int RepositionMax;   //reposition max x
     public int RepositionMin;   //reposition min x
 
-    public System.Action<GameObject,int> RepositionCallback;
+    public System.Action<GameObject,int> onDragFinish;
 
     private float m_fMove_rate = 1f;    //move rate
 
@@ -76,17 +76,17 @@ public class UI_Scroll_Horizontal_List : MonoBehaviour
             if( obj.transform.localPosition.x < this.MinPosX )
             {
                 obj.transform.localPosition = new Vector3( this.RepositionMax + (obj.transform.localPosition.x - this.MinPosX) , obj.transform.localPosition.y , obj.transform.localPosition.z );
-                if(this.RepositionCallback != null)
+                if(this.onDragFinish != null)
                 {
-                    this.RepositionCallback(obj,0);
+                    this.onDragFinish(obj,0);
                 }
             }
             if( obj.transform.localPosition.x > this.MaxPosX )
             {
                 obj.transform.localPosition = new Vector3( this.RepositionMin + (obj.transform.localPosition.x - this.MaxPosX) , obj.transform.localPosition.y , obj.transform.localPosition.z );
-                if(this.RepositionCallback != null)
+                if(this.onDragFinish != null)
                 {
-                    this.RepositionCallback(obj,1);
+                    this.onDragFinish(obj,1);
                 }
             }
         }
