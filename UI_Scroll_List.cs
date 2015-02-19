@@ -13,6 +13,7 @@ using System.Collections.Generic;
 
 
 [AddComponentMenu("uGUI/UI_Scroll_List")]
+[CustomLuaClassAttribute]
 public class UI_Scroll_List : MonoBehaviour
 {
     public enum Movement
@@ -29,17 +30,17 @@ public class UI_Scroll_List : MonoBehaviour
     public float MinFixSpeed = 5;   //min fix speed
 
     public int MaxIndex;    //max index
-    private int MaxPos; //max position x|y
-    private int MinPos; //min position x|y
     public int MaxFixPos;  //fix position x|y
     public int MinFixPos;  //fix position x|y
     public int ItemNum; //scroll item num
     public int ItemCost;    //scroll item cost space
 
+    public System.Action<GameObject,int> onChange = null;
+
+    private int MaxPos; //max position x|y
+    private int MinPos; //min position x|y
     private int RepositionMax;   //reposition max x|y
     private int RepositionMin;   //reposition min x|y
-
-    public System.Action<GameObject,int> onChange = null;
 
     private float m_fMove_rate = 1f;    //move rate
     private int m_iNowIndex = 0;    //now index
@@ -52,6 +53,24 @@ public class UI_Scroll_List : MonoBehaviour
     private bool m_bFixPos = false; //is fix pos
     private GameObject m_cFixObj = null;    //fix gameobjct
     private float m_fFixSpeed = 0; //fix speed
+
+    //init
+    public void Init()
+    {
+        this.RepositionMax = this.MaxFixPos + this.ItemCost;
+        this.RepositionMin = this.MinFixPos - this.ItemCost;
+        this.MaxPos = this.MinFixPos + this.ItemCost * (this.ItemNum-1);
+        this.MinPos = this.MaxFixPos - this.ItemCost * (this.ItemNum-1);
+    }
+
+    //add drag event
+    public void AddDragEvent( GameObject go )
+    {
+        UI_Event ev = UI_Event.Get(go);
+        ev.onDown += OnDown;
+        ev.onUp += OnUp;
+        ev.onDrag += OnDrag;
+    }
 
     void Awake()
     {
@@ -84,20 +103,20 @@ public class UI_Scroll_List : MonoBehaviour
             {
                 this.ScrollItems.Add(item.gameObject);
             }
-            // //regist event
-            // for( int i = 0 ; i<ScrollItems.Count ; i++ )
-            // {
-            //     GameObject go = ScrollItems[i];
-            //     UI_Event ev = UI_Event.Get(go);
-            //     ev.onDown += OnDown;
-            //     ev.onUp += OnUp;
-            //     ev.onDrag += OnDrag;
-            // }
+            //regist event
+            for( int i = 0 ; i<ScrollItems.Count ; i++ )
+            {
+                GameObject go = ScrollItems[i];
+                UI_Event ev = UI_Event.Get(go);
+                ev.onDown += OnDown;
+                ev.onUp += OnUp;
+                ev.onDrag += OnDrag;
+            }
         }
-        UI_Event ev = UI_Event.Get(this.gameObject);
-        ev.onDown += OnDown;
-        ev.onUp += OnUp;
-        ev.onDrag += OnDrag;
+        UI_Event ev1 = UI_Event.Get(this.gameObject);
+        ev1.onDown += OnDown;
+        ev1.onUp += OnUp;
+        ev1.onDrag += OnDrag;
     }
 
     void OnDrag( PointerEventData eventData , GameObject go , string[] args )
@@ -184,6 +203,21 @@ public class UI_Scroll_List : MonoBehaviour
     {
         this.m_bDrag = false;
         this.m_fMoveStartTime = Time.time;
+        if(this.m_iNowIndex <= 0 && this.m_iMoveDir < 0)
+        {
+            this.m_fMove_speed = 0;
+            this.m_bFixPos = true;
+            this.m_fFixSpeed = 0;
+            return;
+        }
+
+        if(this.m_iNowIndex >= this.MaxIndex && this.m_iMoveDir > 0)
+        {
+            this.m_fMove_speed = 0;
+            this.m_bFixPos = true;
+            this.m_fFixSpeed = 0;
+            return;
+        }
     }
 
     void LateUpdate()
@@ -299,7 +333,7 @@ public class UI_Scroll_List : MonoBehaviour
             if(this.m_iNowIndex <= 0)
                 FixPos = this.MaxFixPos;
 
-            this.m_fFixSpeed += 5;
+            this.m_fFixSpeed += this.MinFixSpeed;
             float fixspeed = this.m_fFixSpeed;
             float minDis = 0xffffff;
             if(this.m_iNowIndex <= 0 )
