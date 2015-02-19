@@ -13,7 +13,6 @@ using System.Collections.Generic;
 
 
 [AddComponentMenu("uGUI/UI_Scroll_List")]
-[CustomLuaClassAttribute]
 public class UI_Scroll_List : MonoBehaviour
 {
     public enum Movement
