@@ -76,17 +76,28 @@ public class UI_Scroll_Loop : MonoBehaviour
 
     void OnDrag( PointerEventData eventData , GameObject go , string[] args )
     {
-        this.m_fMove_speed = Mathf.Abs(eventData.delta.x);
+        this.m_fMove_speed = 0;
+        this.m_iMoveDir = 1;
+        if(this.moveType == Movement.Horizontal)
+        {
+            this.m_fMove_speed = Mathf.Abs(eventData.delta.x);
+            this.m_iMoveDir = eventData.delta.x > 0 ? 1 : -1;
+        }
+        else
+        {
+            this.m_fMove_speed = Mathf.Abs(eventData.delta.y);
+            this.m_iMoveDir = eventData.delta.y > 0 ? 1 : -1;
+        }
         if( this.m_fMove_speed > MaxSpeed )
             this.m_fMove_speed = MaxSpeed;
-        this.m_iMoveDir = eventData.delta.x > 0 ? 1 : -1;
+        
         foreach( GameObject obj in this.ScrollItems )
         {
             Vector3 mv = Vector3.zero;
             if( this.moveType == Movement.Horizontal )
                 mv = new Vector3(eventData.delta.x * this.m_fMove_rate , 0 , 0);
             else
-                mv = new Vector3( 0 , eventData.delta.x * this.m_fMove_rate , 0);
+                mv = new Vector3( 0 , eventData.delta.y * this.m_fMove_rate , 0);
             obj.transform.localPosition += mv;
         }
         foreach( GameObject obj in this.ScrollItems )
@@ -106,11 +117,11 @@ public class UI_Scroll_Loop : MonoBehaviour
             {
                 if( obj.transform.localPosition.y < this.MinPos )
                 {
-                    obj.transform.localPosition = new Vector3( obj.transform.localPosition.y , this.RepositionMax + (obj.transform.localPosition.y - this.MinPos) , obj.transform.localPosition.z );
+                    obj.transform.localPosition = new Vector3( obj.transform.localPosition.x , this.RepositionMax + (obj.transform.localPosition.y - this.MinPos) , obj.transform.localPosition.z );
                 }
                 if( obj.transform.localPosition.y > this.MaxPos )
                 {
-                    obj.transform.localPosition = new Vector3( obj.transform.localPosition.y , this.RepositionMin + (obj.transform.localPosition.y - this.MaxPos) , obj.transform.localPosition.z );
+                    obj.transform.localPosition = new Vector3( obj.transform.localPosition.x , this.RepositionMin + (obj.transform.localPosition.y - this.MaxPos) , obj.transform.localPosition.z );
                 }
             }
         }
@@ -187,11 +198,11 @@ public class UI_Scroll_Loop : MonoBehaviour
                 {
                     if( obj.transform.localPosition.y < this.MinPos )
                     {
-                        obj.transform.localPosition = new Vector3( obj.transform.localPosition.y , this.RepositionMax + (obj.transform.localPosition.y - this.MinPos) , obj.transform.localPosition.z );
+                        obj.transform.localPosition = new Vector3( obj.transform.localPosition.x , this.RepositionMax + (obj.transform.localPosition.y - this.MinPos) , obj.transform.localPosition.z );
                     }
                     if( obj.transform.localPosition.y > this.MaxPos )
                     {
-                        obj.transform.localPosition = new Vector3( obj.transform.localPosition.y , this.RepositionMin + (obj.transform.localPosition.y - this.MaxPos) , obj.transform.localPosition.z );
+                        obj.transform.localPosition = new Vector3( obj.transform.localPosition.x , this.RepositionMin + (obj.transform.localPosition.y - this.MaxPos) , obj.transform.localPosition.z );
                     }
                 }
             }
