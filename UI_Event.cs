@@ -17,8 +17,8 @@ using UnityEngine.EventSystems;
 [CustomLuaClassAttribute]
 public class UI_Event : UnityEngine.EventSystems.EventTrigger
 {
-    private const float CLICK_INTERVAL = 0.2f;
-    // private const float CLICK_INTERVAL_POS = 1;
+    private const float CLICK_INTERVAL_TIME = 0.2f; //const click interval time
+    private const float CLICK_INTERVAL_POS = 2; //const click interval pos
 
     public delegate void PointerEventDelegate ( PointerEventData eventData , GameObject go , string[] args );
     public delegate void BaseEventDelegate ( BaseEventData eventData , GameObject go , string[] args );
@@ -98,14 +98,15 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        if( Time.realtimeSinceStartup -  this.m_fOnDowntime > CLICK_INTERVAL )
+        if( Time.realtimeSinceStartup -  this.m_fOnDowntime > CLICK_INTERVAL_TIME )
         {
             return;
         }
         // if( (eventData.position - this.m_vecOnDownpos).magnitude > CLICK_INTERVAL_POS )
-        // {
-        //     return;
-        // }
+        if( eventData.delta.magnitude > CLICK_INTERVAL_POS )
+        {
+            return;
+        }
         if(onClick != null) onClick(eventData , gameObject , this.m_vecArg);
     }
 
