@@ -17,6 +17,9 @@ using UnityEngine.EventSystems;
 [CustomLuaClassAttribute]
 public class UI_Event : UnityEngine.EventSystems.EventTrigger
 {
+    private const float CLICK_INTERVAL = 0.2f;
+    // private const float CLICK_INTERVAL_POS = 1;
+
     public delegate void PointerEventDelegate ( PointerEventData eventData , GameObject go , string[] args );
     public delegate void BaseEventDelegate ( BaseEventData eventData , GameObject go , string[] args );
     public delegate void AxisEventDelegate ( AxisEventData eventData , GameObject go , string[] args );
@@ -35,6 +38,9 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
     public PointerEventDelegate onScroll = null;
     public BaseEventDelegate onSelect = null;
     public BaseEventDelegate onUpdateSelect = null;
+
+    private float m_fOnDowntime;  //on down time
+    private Vector2 m_vecOnDownpos; //on down pos
 
     public static UI_Event Get(Transform go)
     {
@@ -92,11 +98,21 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
 
     public override void OnPointerClick(PointerEventData eventData)
     {
+        if( Time.realtimeSinceStartup -  this.m_fOnDowntime > CLICK_INTERVAL )
+        {
+            return;
+        }
+        // if( (eventData.position - this.m_vecOnDownpos).magnitude > CLICK_INTERVAL_POS )
+        // {
+        //     return;
+        // }
         if(onClick != null) onClick(eventData , gameObject , this.m_vecArg);
     }
 
     public override void OnPointerDown (PointerEventData eventData)
     {
+        this.m_fOnDowntime = Time.realtimeSinceStartup;
+        this.m_vecOnDownpos = eventData.position;
         if(onDown != null) onDown(eventData , gameObject , this.m_vecArg);
     }
 
