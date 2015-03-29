@@ -102,11 +102,11 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
         {
             return;
         }
-        // if( (eventData.position - this.m_vecOnDownpos).magnitude > CLICK_INTERVAL_POS )
-        if( eventData.delta.magnitude > CLICK_INTERVAL_POS )
-        {
-            return;
-        }
+        // // if( (eventData.position - this.m_vecOnDownpos).magnitude > CLICK_INTERVAL_POS )
+        // if( eventData.delta.magnitude > CLICK_INTERVAL_POS )
+        // {
+        //     return;
+        // }
         if(onClick != null) onClick(eventData , gameObject , this.m_vecArg);
     }
 
