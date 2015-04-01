@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 //font num
 [CustomLuaClassAttribute]
+[AddComponentMenu("uGUI/UI_FontNum")]
 public class UI_FontNum : MonoBehaviour
 {
     public Sprite[] Num = new Sprite[10];
