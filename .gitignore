@@ -1,2 +1,8 @@
 .DS_Store
+u3d/Library
+u3d/Temp
+u3d/*.sln
+u3d/*.csproj
+u3d/*.userprefs
+
 
