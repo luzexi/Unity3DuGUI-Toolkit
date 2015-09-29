@@ -26,7 +26,7 @@ public class UI_ButtonScale : MonoBehaviour
             mStarted = true;
             if (tweenTarget == null) tweenTarget = transform;
             mScale = tweenTarget.localScale;
-            var ev = UI_Event.Get(tweenTarget);
+            var ev = UI_Event.Get(transform);
             ev.onDown += OnDown;
             ev.onUp += OnUp;
         }

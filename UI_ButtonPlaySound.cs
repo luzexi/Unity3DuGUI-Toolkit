@@ -65,7 +65,7 @@ public class UI_ButtonPlaySound : MonoBehaviour
 
             if (mListener != null && mListener.enabled && mListener.gameObject.activeSelf)
             {
-                AudioSource source = mListener.audio;
+                AudioSource source = mListener.GetComponent<AudioSource>();
                 if (source == null) source = mListener.gameObject.AddComponent<AudioSource>();
                 source.pitch = pitch;
                 source.PlayOneShot(clip, volume);
