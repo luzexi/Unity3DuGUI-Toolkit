@@ -27,7 +27,7 @@ public class UI_TweenScale : UI_Tween
     void Awake()
     {
         if(tweenTarget == null) tweenTarget = this.gameObject;
-        this.m_fStartTime = Time.time;
+        this.m_fStartTime = Time.realtimeSinceStartup;
         this.m_delEase = GetEasingFunction(easeType);
         if(fromnow)
         {
@@ -39,7 +39,7 @@ public class UI_TweenScale : UI_Tween
     {
         if( enabled )
         {
-            float disTime = Time.time - this.m_fStartTime;
+            float disTime = Time.realtimeSinceStartup - this.m_fStartTime;
             float rate = 0;
             switch( loop )
             {

@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-
 //  UI_Event.cs
 //  Author: Lu Zexi
 //  2014-07-06
@@ -97,9 +96,8 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        if( Time.time -  this.m_fOnDowntime > CLICK_INTERVAL_TIME )
+        if( Time.realtimeSinceStartup -  this.m_fOnDowntime > CLICK_INTERVAL_TIME )
         {
-            // Debug.Log(" time refuse " + (Time.time - this.m_fOnDowntime));
             return;
         }
         // // if( (eventData.position - this.m_vecOnDownpos).magnitude > CLICK_INTERVAL_POS )
@@ -112,7 +110,7 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
 
     public override void OnPointerDown (PointerEventData eventData)
     {
-        this.m_fOnDowntime = Time.time;
+        this.m_fOnDowntime = Time.realtimeSinceStartup;
         this.m_vecOnDownpos = eventData.position;
         if(onDown != null) onDown(eventData , gameObject , this.m_vecArg);
     }

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-
 //  UI_FontNum.cs
 //  Author: Lu Zexi
 //  2015-03-31
@@ -15,16 +14,9 @@ using System.Collections.Generic;
 public class UI_FontNum : MonoBehaviour
 {
     public Sprite[] Num = new Sprite[10];
-    public TextAnchor alignment = TextAnchor.MiddleCenter; //alignment
-    public int number = 999;    //number
-    public int interval = 1;    //interval
+    public int interval = 1;
 
     private List<GameObject> m_lstObj = new List<GameObject>();
-
-    void Awake()
-    {
-        Setup(this.number);
-    }
 
     public void Setup( int num )
     {
@@ -72,38 +64,8 @@ public class UI_FontNum : MonoBehaviour
             tmpImg.SetNativeSize();
 
             if(i>0) x+=interval;
-            tmpImg.transform.localPosition += new Vector3(x,0,0);
-            if(i<lst.Count-1)
             x = x + Num[lst[i]].textureRect.width;
-        }
-
-        int offset_x = 0;
-        int offset_y = 0;
-        switch(this.alignment)
-        {
-            case TextAnchor.UpperLeft:
-                break;
-            case TextAnchor.UpperCenter:
-                break;
-            case TextAnchor.UpperRight:
-                break;
-            case TextAnchor.MiddleLeft:
-                break;
-            case TextAnchor.MiddleCenter:
-                offset_x = (int)(x/2);
-                break;
-            case TextAnchor.MiddleRight:
-                break;
-            case TextAnchor.LowerLeft:
-                break;
-            case TextAnchor.LowerCenter:
-                break;
-            case TextAnchor.LowerRight:
-                break;
-        }
-        for(int i=0 ; i<lst.Count ; i++)
-        {
-            this.m_lstObj[i].transform.localPosition -= new Vector3(offset_x,offset_y);
+            tmpImg.transform.localPosition += new Vector3(x,0,0);
         }
     }
 }

@@ -29,7 +29,7 @@ public class UI_TweenColor : UI_Tween
     void Awake()
     {
         if(tweenTarget == null) tweenTarget = this.gameObject;
-        this.m_fStartTime = Time.time;
+        this.m_fStartTime = Time.realtimeSinceStartup;
         this.m_cImage = tweenTarget.GetComponent<Image>();
         this.m_delEase = GetEasingFunction(easeType);
     }
@@ -38,7 +38,7 @@ public class UI_TweenColor : UI_Tween
     {
         if( enabled && this.m_cImage != null )
         {
-            float disTime = Time.time - this.m_fStartTime;
+            float disTime = Time.realtimeSinceStartup - this.m_fStartTime;
             float rate = 0;
             switch( loop )
             {
