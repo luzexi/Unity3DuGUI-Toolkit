@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 /// Simple example script of how a button can be offset visibly when the mouse hovers over it or it gets pressed.
 /// </summary>
 [AddComponentMenu("uGUI/UI_Button Offset")]
-public class UI_ButtonOffset : MonoBehaviour
+public class UI_ButtonOffset : UI_ComponentBase
 {
     public Transform tweenTarget;
     public Vector3 hover = Vector3.zero;
@@ -42,7 +42,7 @@ public class UI_ButtonOffset : MonoBehaviour
         }
     }
 
-    void OnDown ( PointerEventData eventData , GameObject go , string[] args )
+    void OnDown ( PointerEventData eventData , UI_Event go )
     {
         if (enabled)
         {
@@ -50,7 +50,7 @@ public class UI_ButtonOffset : MonoBehaviour
         }
     }
 
-    void OnUp ( PointerEventData eventData , GameObject go , string[] args )
+    void OnUp ( PointerEventData eventData , UI_Event go )
     {
         if (enabled)
         {

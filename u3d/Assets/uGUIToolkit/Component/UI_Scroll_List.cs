@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 
 [AddComponentMenu("uGUI/UI_Scroll_List")]
-public class UI_Scroll_List : MonoBehaviour
+public class UI_Scroll_List : UI_ComponentBase
 {
     public enum Movement
     {
@@ -118,7 +118,7 @@ public class UI_Scroll_List : MonoBehaviour
         ev1.onDrag += OnDrag;
     }
 
-    void OnDrag( PointerEventData eventData , GameObject go , string[] args )
+    void OnDrag( PointerEventData eventData , UI_Event go )
     {
         this.m_fMove_speed = 0;
         this.m_iMoveDir = 0;
@@ -191,14 +191,14 @@ public class UI_Scroll_List : MonoBehaviour
         }
     }
 
-    void OnDown( PointerEventData eventData , GameObject go , string[] args )
+    void OnDown( PointerEventData eventData , UI_Event go )
     {
         this.m_bDrag = true;
         this.m_fMove_speed = 0;
         this.m_bFixPos = false;
     }
 
-    void OnUp( PointerEventData eventData , GameObject go , string[] args )
+    void OnUp( PointerEventData eventData , UI_Event go )
     {
         this.m_bDrag = false;
         this.m_fMoveStartTime = Time.time;

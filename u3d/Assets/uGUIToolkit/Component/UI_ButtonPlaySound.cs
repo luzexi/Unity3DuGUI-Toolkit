@@ -13,7 +13,7 @@ using Game.Media;
 /// Plays the specified sound.
 /// </summary>
 [AddComponentMenu("uGUI/UI_Button PlaySound")]
-public class UI_ButtonPlaySound : MonoBehaviour
+public class UI_ButtonPlaySound : UI_ComponentBase
 {
     public AudioClip audioClip;
 
@@ -32,7 +32,7 @@ public class UI_ButtonPlaySound : MonoBehaviour
         }
     }
 
-    void OnClick (PointerEventData eventData , GameObject go , string[] args)
+    void OnClick (PointerEventData eventData , UI_Event go)
     {
         if(audioClip != null)
         {

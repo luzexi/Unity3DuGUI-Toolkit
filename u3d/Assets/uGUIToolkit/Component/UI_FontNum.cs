@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 //font num
 [AddComponentMenu("uGUI/UI_FontNum")]
-public class UI_FontNum : MonoBehaviour
+public class UI_FontNum : UI_ComponentBase
 {
     public Sprite[] Num = new Sprite[10];
     public int interval = 1;

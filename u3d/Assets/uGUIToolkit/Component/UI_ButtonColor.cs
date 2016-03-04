@@ -3,32 +3,37 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
-//  UI_ButtonImage.cs
+//  UI_ButtonColor.cs
 //  Author: Lu Zexi
 //  2015-02-06
 
 
 
-[AddComponentMenu("uGUI/UI_Button Image")]
-public class UI_ButtonImage : MonoBehaviour
+[AddComponentMenu("uGUI/UI_Button Color")]
+public class UI_ButtonColor : UI_ComponentBase
 {
     /// <summary>
-    /// Target with a widget, renderer, or light that will have its Sprite tweened.
+    /// Target with a widget, renderer, or light that will have its color tweened.
     /// </summary>
 
     public GameObject tweenTarget;
 
     /// <summary>
-    /// Sprite to apply on normal.
+    /// Color to apply on hover event (mouse only).
     /// </summary>
-    public Sprite normal = null;
+    public Color hover = Color.white;
 
     /// <summary>
-    /// Sprite to apply on the pressed event.
+    /// Color to apply on the pressed event.
     /// </summary>
-    public Sprite pressed = null;
+    public Color pressed = new Color(0.75f, 0.75f, 0.75f, 1f);
 
-    Sprite mSprite;
+    /// <summary>
+    /// Duration of the tween process.
+    /// </summary>
+    public float duration = 0f;
+
+    Color mColor;
     Image mImage;
     bool mStarted = false;
 
@@ -49,7 +54,7 @@ public class UI_ButtonImage : MonoBehaviour
         if (mStarted && tweenTarget != null)
         {
             if( this.mImage != null )
-                this.mImage.sprite = mSprite;
+                this.mImage.color = mColor;
         }
     }
 
@@ -60,23 +65,23 @@ public class UI_ButtonImage : MonoBehaviour
         this.mImage = img;
         if(img != null)
         {
-            mSprite = img.sprite;
+            mColor = img.color;
         }
     }
 
-    void OnDown ( PointerEventData eventData , GameObject go , string[] args )
+    void OnDown ( PointerEventData eventData , UI_Event go )
     {
         if (enabled)
         {
-            this.mImage.sprite = pressed;
+            UI_TweenColor.Begin(tweenTarget , duration , pressed);
         }
     }
 
-    void OnUp ( PointerEventData eventData , GameObject go , string[] args )
+    void OnUp ( PointerEventData eventData , UI_Event go )
     {
         if (enabled)
         {
-            this.mImage.sprite = normal;
+            UI_TweenColor.Begin(tweenTarget , duration , mColor).from = pressed;
         }
     }
 }

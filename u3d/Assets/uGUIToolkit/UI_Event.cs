@@ -18,11 +18,11 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
     private const float CLICK_INTERVAL_TIME = 0.2f; //const click interval time
     private const float CLICK_INTERVAL_POS = 2; //const click interval pos
 
-    public delegate void PointerEventDelegate ( PointerEventData eventData , GameObject go , string[] args );
-    public delegate void BaseEventDelegate ( BaseEventData eventData , GameObject go , string[] args );
-    public delegate void AxisEventDelegate ( AxisEventData eventData , GameObject go , string[] args );
+    public delegate void PointerEventDelegate ( PointerEventData eventData , UI_Event go);
+    public delegate void BaseEventDelegate ( BaseEventData eventData , UI_Event go);
+    public delegate void AxisEventDelegate ( AxisEventData eventData , UI_Event go);
 
-    public string[] m_vecArg = null;
+    public Dictionary<string,object> mArg = new Dictionary<string,object>();
 
     public BaseEventDelegate onDeselect = null;
     public PointerEventDelegate onDrag = null;
@@ -40,107 +40,124 @@ public class UI_Event : UnityEngine.EventSystems.EventTrigger
     private float m_fOnDowntime;  //on down time
     private Vector2 m_vecOnDownpos; //on down pos
 
+    public void AddData(string key , object val)
+    {
+        mArg[key] = val;
+    }
+
+    public D GetData<D>(string key)
+    {
+        if(mArg.ContainsKey(key))
+        {
+            return (D)mArg[key];
+        }
+        return default(D);
+    }
+
     public static UI_Event Get(Transform go)
     {
-        return Get(go,"");
+        return Get(go.gameObject);
     }
 
-    public static UI_Event Get(Transform go , string args)
+    public static UI_Event Get(Component go)
     {
-        return Get(go.gameObject , args);
-    }
-
-    public static UI_Event Get(MonoBehaviour go)
-    {
-        return Get(go,"");
-    }
-
-    public static UI_Event Get(MonoBehaviour go , string args)
-    {
-        return Get(go.gameObject,args);
+        return Get(go.gameObject);
     }
 
     public static UI_Event Get(GameObject go)
     {
-        return Get(go,"");
-    }
-
-    public static UI_Event Get(GameObject go , string args)
-    {
         UI_Event listener = go.GetComponent<UI_Event>();
         if (listener == null) listener = go.AddComponent<UI_Event>();
-        if(!string.IsNullOrEmpty(args))
-            listener.m_vecArg = args.Split(new char[]{';'});
+        return listener;
+    }
+
+    public static U Get<U>(Transform go)
+        where U: UI_Event
+    {
+        return Get<U>(go.gameObject);
+    }
+
+    public static U Get<U>(Component go)
+        where U: UI_Event
+    {
+        return Get<U>(go.gameObject);
+    }
+
+    public static U Get<U>(GameObject go)
+        where U: UI_Event
+    {
+        U listener = go.GetComponent<U>();
+        if (listener == null) listener = go.AddComponent<U>();
         return listener;
     }
 
     public override void OnDeselect( BaseEventData eventData )
     {
-        if(onDeselect != null) onDeselect(eventData , gameObject , this.m_vecArg);
+        if(onDeselect != null) onDeselect(eventData , this);
     }
 
     public override void OnDrag( PointerEventData eventData )
     {
-        if(onDrag != null) onDrag(eventData , gameObject , this.m_vecArg);
+        if(onDrag != null) onDrag(eventData , this);
     }
 
     public override void OnDrop( PointerEventData eventData )
     {
-        if(onDrop != null) onDrop(eventData , gameObject , this.m_vecArg);
+        if(onDrop != null) onDrop(eventData , this);
     }
 
     public override void OnMove( AxisEventData eventData )
     {
-        if(onMove != null) onMove(eventData , gameObject , this.m_vecArg);
+        if(onMove != null) onMove(eventData , this);
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        if( Time.realtimeSinceStartup -  this.m_fOnDowntime > CLICK_INTERVAL_TIME )
-        {
-            return;
-        }
+        // if( Time.realtimeSinceStartup -  this.m_fOnDowntime > CLICK_INTERVAL_TIME )
+        // {
+        //     return;
+        // }
         // // if( (eventData.position - this.m_vecOnDownpos).magnitude > CLICK_INTERVAL_POS )
         // if( eventData.delta.magnitude > CLICK_INTERVAL_POS )
         // {
         //     return;
         // }
-        if(onClick != null) onClick(eventData , gameObject , this.m_vecArg);
+        if(onClick != null) onClick(eventData , this);
     }
 
     public override void OnPointerDown (PointerEventData eventData)
     {
         this.m_fOnDowntime = Time.realtimeSinceStartup;
         this.m_vecOnDownpos = eventData.position;
-        if(onDown != null) onDown(eventData , gameObject , this.m_vecArg);
+        if(onDown != null) onDown(eventData , this);
     }
 
     public override void OnPointerEnter (PointerEventData eventData)
     {
-        if(onEnter != null) onEnter(eventData , gameObject , this.m_vecArg);
+        if(onEnter != null) onEnter(eventData , this);
     }
 
     public override void OnPointerExit (PointerEventData eventData)
     {
-        if(onExit != null) onExit(eventData , gameObject , this.m_vecArg);
+        if(onExit != null) onExit(eventData , this);
     }
     public override void OnPointerUp (PointerEventData eventData)
     {
-        if(onUp != null) onUp(eventData , gameObject , this.m_vecArg);
+        if(onUp != null) onUp(eventData , this);
     }
 
     public override void OnScroll( PointerEventData eventData )
     {
-        if(onScroll != null) onScroll(eventData , gameObject , this.m_vecArg);
+        if(onScroll != null) onScroll(eventData , this);
     }
     public override void OnSelect (BaseEventData eventData)
     {
-        if(onSelect != null) onSelect(eventData , gameObject , this.m_vecArg);
+        if(onSelect != null) onSelect(eventData , this);
     }
 
     public override void OnUpdateSelected (BaseEventData eventData)
     {
-        if(onUpdateSelect != null) onUpdateSelect(eventData , gameObject , this.m_vecArg);
+        if(onUpdateSelect != null) onUpdateSelect(eventData , this);
     }
 }
 

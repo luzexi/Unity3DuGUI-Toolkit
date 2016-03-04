@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 
 [AddComponentMenu("uGUI/UI_Button Scale")]
-public class UI_ButtonScale : MonoBehaviour
+public class UI_ButtonScale : UI_ComponentBase
 {
     public Transform tweenTarget;
     public Vector3 hover = Vector3.one;
@@ -40,7 +40,7 @@ public class UI_ButtonScale : MonoBehaviour
         }
     }
 
-    void OnDown ( PointerEventData eventData , GameObject go , string[] args )
+    void OnDown ( PointerEventData eventData , UI_Event go )
     {
         if (enabled)
         {
@@ -48,7 +48,7 @@ public class UI_ButtonScale : MonoBehaviour
         }
     }
 
-    void OnUp ( PointerEventData eventData , GameObject go , string[] args )
+    void OnUp ( PointerEventData eventData , UI_Event go )
     {
         if (enabled)
         {
