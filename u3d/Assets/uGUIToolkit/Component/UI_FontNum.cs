@@ -14,9 +14,15 @@ using System.Collections.Generic;
 public class UI_FontNum : UI_ComponentBase
 {
     public Sprite[] Num = new Sprite[10];
-    public int interval = 1;
+    public int interval = 2;
+    public int Number = 9999;
 
     private List<GameObject> m_lstObj = new List<GameObject>();
+
+    void Awake()
+    {
+        Setup(Number);
+    }
 
     public void Setup( int num )
     {
