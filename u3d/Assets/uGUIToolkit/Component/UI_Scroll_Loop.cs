@@ -21,19 +21,28 @@ public class UI_Scroll_Loop : UI_ComponentBase
         Vertical,
     }
 
-    public List<GameObject> ScrollItems = new List<GameObject>();
-
-    public Movement moveType = Movement.Horizontal;
-
-    public float Pos = 0;
+    [SerializeField]
+    public List<RectTransform> ScrollItems = new List<RectTransform>();   //object list
+    [SerializeField]
+    public Movement moveType = Movement.Horizontal; //move type
+    [SerializeField]
+    public int StartIndex = 0;  //start index
+    [SerializeField]
     public float MaxSpeed = 50;    //max speed
+    [SerializeField]
     public float MinFixSpeed = 5;   //min fix speed
+    [SerializeField]
+    public int Size = 200;    //size of item
+    [SerializeField]
+    public int LeftCount = 1; //remain left count
+    [SerializeField]
+    public int RightCount = 1;    //remain right count
 
-    public int MaxPos; //max position x
-    public int MinPos; //min position x
+    private int MaxPos; //max position x
+    private int MinPos; //min position x
 
-    public int RepositionMax;   //reposition max x
-    public int RepositionMin;   //reposition min x
+    private int RepositionMax;   //reposition max x
+    private int RepositionMin;   //reposition min x
 
     private float m_fMove_rate = 1f;    //move rate
 
@@ -48,6 +57,46 @@ public class UI_Scroll_Loop : UI_ComponentBase
 
     void Awake()
     {
+        Refresh();
+    }
+
+    public void Refresh()
+    {
+        this.m_fMove_rate = 1;
+        this.m_fMove_speed = 0;
+        this.m_iMoveDir = 1;
+        this.m_fMoveStartTime = 0;
+        this.m_bDrag = false;
+        this.m_bFixPos = false;
+        this.m_cFixObj = null;
+        this.m_fFixSpeed = 0;
+
+        MaxPos = (int)(0 + this.Size * (this.ScrollItems.Count-this.LeftCount));
+        MinPos = (int)(0 - this.Size * (this.ScrollItems.Count-this.RightCount));
+
+        RepositionMax = (int)(0 + this.Size*(this.RightCount));
+        RepositionMin = (int)(0 - this.Size*(this.LeftCount));
+
+        for(int i = this.StartIndex ; i<this.ScrollItems.Count-this.LeftCount ;i++)
+        {
+            if(moveType == Movement.Horizontal)
+                this.ScrollItems[i-this.StartIndex].transform.localPosition = new Vector3((i-this.StartIndex)*this.Size, 0 , 0);
+            else
+                this.ScrollItems[i-this.StartIndex].transform.localPosition = new Vector3(0, (i-this.StartIndex)*this.Size , 0);
+        }
+        for(int i = 0 ; i<this.LeftCount ;i++)
+        {
+            int index = this.StartIndex - 1 - i;
+            if(index < 0)
+            {
+                index = this.ScrollItems.Count + index;
+            }
+            if(moveType == Movement.Horizontal)
+                this.ScrollItems[index].transform.localPosition = new Vector3((i+1)*this.Size*-1, 0 , 0);
+            else
+                this.ScrollItems[index].transform.localPosition = new Vector3(0, (i+1)*this.Size*-1 , 0);
+        }
+
         //regist event
         for( int i = 0 ; i<ScrollItems.Count ; i++ )
         {
@@ -149,9 +198,9 @@ public class UI_Scroll_Loop : UI_ComponentBase
             {
                 float dis = 0;
                 if( this.moveType == Movement.Horizontal )
-                    dis = Mathf.Abs(obj.transform.localPosition.x - this.Pos);
+                    dis = Mathf.Abs(obj.transform.localPosition.x);
                 else
-                    dis = Mathf.Abs(obj.transform.localPosition.y - this.Pos);
+                    dis = Mathf.Abs(obj.transform.localPosition.y);
                 if( dis < minDis )
                 {
                     this.m_cFixObj = obj;
@@ -160,9 +209,9 @@ public class UI_Scroll_Loop : UI_ComponentBase
             }
             float main_pos = 0;
             if( this.moveType == Movement.Horizontal )
-                main_pos = this.Pos - this.m_cFixObj.transform.localPosition.x;
+                main_pos = 0 - this.m_cFixObj.transform.localPosition.x;
             else
-                main_pos = this.Pos - this.m_cFixObj.transform.localPosition.y;
+                main_pos = 0 - this.m_cFixObj.transform.localPosition.y;
             if( main_pos < 0 )
                 this.m_fFixSpeed *= -1;
         }
@@ -218,9 +267,9 @@ public class UI_Scroll_Loop : UI_ComponentBase
                 {
                     float dis = 0;
                     if( this.moveType == Movement.Horizontal )
-                        dis = Mathf.Abs(obj.transform.localPosition.x - this.Pos);
+                        dis = Mathf.Abs(obj.transform.localPosition.x);
                     else
-                        dis = Mathf.Abs(obj.transform.localPosition.y - this.Pos);
+                        dis = Mathf.Abs(obj.transform.localPosition.y);
                     if( dis < minDis )
                     {
                         this.m_cFixObj = obj;
@@ -229,9 +278,9 @@ public class UI_Scroll_Loop : UI_ComponentBase
                 }
                 float main_pos = 0;
                 if( this.moveType == Movement.Horizontal )
-                    main_pos = this.Pos - this.m_cFixObj.transform.localPosition.x;
+                    main_pos = 0 - this.m_cFixObj.transform.localPosition.x;
                 else
-                    main_pos = this.Pos - this.m_cFixObj.transform.localPosition.y;
+                    main_pos = 0 - this.m_cFixObj.transform.localPosition.y;
                 if( main_pos < 0 )
                     this.m_fFixSpeed *= -1;
             }
@@ -242,7 +291,7 @@ public class UI_Scroll_Loop : UI_ComponentBase
             Vector3 fixOffset = Vector3.zero;
             if(this.moveType == Movement.Horizontal)
             {
-                float dis = this.Pos - this.m_cFixObj.transform.localPosition.x;
+                float dis = 0 - this.m_cFixObj.transform.localPosition.x;
                 if( Mathf.Abs(this.m_fFixSpeed) > Mathf.Abs(dis) )
                 {
                     this.m_fFixSpeed = dis;
@@ -251,7 +300,7 @@ public class UI_Scroll_Loop : UI_ComponentBase
             }
             else
             {
-                float dis = this.Pos - this.m_cFixObj.transform.localPosition.y;
+                float dis = 0 - this.m_cFixObj.transform.localPosition.y;
                 if( Mathf.Abs(this.m_fFixSpeed) > Mathf.Abs(dis) )
                 {
                     this.m_fFixSpeed = dis;
@@ -264,12 +313,12 @@ public class UI_Scroll_Loop : UI_ComponentBase
             }
             if( this.moveType == Movement.Horizontal )
             {
-                if(this.m_cFixObj.transform.localPosition.x == this.Pos)
+                if(this.m_cFixObj.transform.localPosition.x == 0)
                     this.m_bFixPos = false;
             }
             else
             {
-                if(this.m_cFixObj.transform.localPosition.y == this.Pos)
+                if(this.m_cFixObj.transform.localPosition.y == 0)
                     this.m_bFixPos = false;
             }
         }

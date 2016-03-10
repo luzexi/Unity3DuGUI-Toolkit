@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [CustomEditor(typeof(UI_ListGrid))]
-public class ListGridEditor : Editor
+public class UI_ListGridEditor : Editor
 {
 	public override void OnInspectorGUI()
 	{
@@ -16,7 +16,7 @@ public class ListGridEditor : Editor
 		grid.Interval = EditorGUILayout.IntField("Interval",grid.Interval);
 		grid.Dir = (UI_ListGrid.DIR)EditorGUILayout.EnumPopup("Direction",grid.Dir);
 
-		if(GUILayout.Button("Reset"))
+		if(GUILayout.Button("Refresh"))
 		{
 			grid.Refresh();
 		}
