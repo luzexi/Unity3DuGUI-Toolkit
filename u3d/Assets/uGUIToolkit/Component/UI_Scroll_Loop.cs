@@ -22,7 +22,7 @@ public class UI_Scroll_Loop : UI_ComponentBase
     }
 
     [SerializeField]
-    public List<RectTransform> ScrollItems = new List<RectTransform>();   //object list
+    public List<GameObject> ScrollItems = new List<GameObject>();   //object list
     [SerializeField]
     public Movement moveType = Movement.Horizontal; //move type
     [SerializeField]
@@ -71,6 +71,7 @@ public class UI_Scroll_Loop : UI_ComponentBase
         this.m_cFixObj = null;
         this.m_fFixSpeed = 0;
 
+        // this.Size = this.ScrollItems[0].rect.width;
         MaxPos = (int)(0 + this.Size * (this.ScrollItems.Count-this.LeftCount));
         MinPos = (int)(0 - this.Size * (this.ScrollItems.Count-this.RightCount));
 
