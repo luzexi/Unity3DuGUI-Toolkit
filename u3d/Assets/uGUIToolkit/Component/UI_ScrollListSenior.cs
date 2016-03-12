@@ -56,7 +56,7 @@ public class UI_ScrollListSenior : MonoBehaviour
     private GameObject m_cFixObj = null;    //fix gameobjct
     private float m_fFixSpeed = 0; //fix speed
 
-    public void SetChangeHandle(System.Action<GameObject,int> change)
+    public void SetInitUnitHandle(System.Action<GameObject,int> change)
     {
         this.onChange = change;
     }

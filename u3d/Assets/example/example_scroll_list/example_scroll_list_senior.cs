@@ -11,12 +11,12 @@ public class example_scroll_list_senior : MonoBehaviour
 		if(scroll != null)
 		{
 			scroll.Total = 54;
-			scroll.SetChangeHandle(InitItem);
+			scroll.SetInitUnitHandle(InitUnit);
 			scroll.Init();
 		}
 	}
 
-	void InitItem(GameObject go , int index)
+	void InitUnit(GameObject go , int index)
 	{
 		Debug.Log("item index" + index);
 	}
