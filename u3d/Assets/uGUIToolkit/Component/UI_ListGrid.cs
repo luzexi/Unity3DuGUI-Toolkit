@@ -22,7 +22,9 @@ public class UI_ListGrid : MonoBehaviour
 	}
 
 	[SerializeField]
-	public int Interval;
+	public int IntervalLine;
+	[SerializeField]
+	public int IntervalItem;
 	[SerializeField]
 	public int LineMaxCount;
 	[SerializeField]
@@ -79,7 +81,7 @@ public class UI_ListGrid : MonoBehaviour
 		{
 			for(int i = 0 ; i<childCount ; i++)
 			{
-				Vector3 pos = new Vector3(i%LineMaxCount*Interval*dirx,i/LineMaxCount*Interval*diry,0);
+				Vector3 pos = new Vector3(i%LineMaxCount*IntervalItem*dirx,i/LineMaxCount*IntervalLine*diry,0);
 				Transform child = this.transform.GetChild(i);
 				child.localPosition = pos;
 			}
@@ -88,7 +90,7 @@ public class UI_ListGrid : MonoBehaviour
 		{
 			for(int i = 0 ; i<childCount ; i++)
 			{
-				Vector3 pos = new Vector3(i/LineMaxCount*Interval*dirx,i%LineMaxCount*Interval*diry,0);
+				Vector3 pos = new Vector3(i/LineMaxCount*IntervalLine*dirx,i%LineMaxCount*IntervalItem*diry,0);
 				Transform child = this.transform.GetChild(i);
 				child.localPosition = pos;
 			}
