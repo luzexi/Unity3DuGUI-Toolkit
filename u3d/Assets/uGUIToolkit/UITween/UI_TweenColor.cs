@@ -26,7 +26,7 @@ public class UI_TweenColor : UI_Tween
     EasingFunction m_delEase;   //delegate function
 
 
-    void Awake()
+    void Start()
     {
         if(tweenTarget == null) tweenTarget = this.gameObject;
         this.m_fStartTime = Time.realtimeSinceStartup;

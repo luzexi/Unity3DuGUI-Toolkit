@@ -21,6 +21,7 @@ public class UI_Scroll_LoopEditor : Editor
 		loop.Size = EditorGUILayout.IntField("Size",loop.Size);
 		loop.LeftCount = EditorGUILayout.IntField("LeftCount",loop.LeftCount);
 		loop.RightCount = EditorGUILayout.IntField("RightCount",loop.RightCount);
+		serializedObject.ApplyModifiedProperties();
 		if(GUILayout.Button("Refresh"))
 		{
 			loop.Refresh();

@@ -10,29 +10,25 @@ using Game.Media;
 #endif
 
 /// <summary>
-/// Plays the specified sound.
+/// sound component
 /// </summary>
 [AddComponentMenu("uGUI/UI_Button PlaySound")]
-public class UI_ButtonPlaySound : UI_ComponentBase
+public class UI_ButtonPlaySound : UI_Event
 {
+    [SerializeField]
     public AudioClip audioClip;
-
+    [SerializeField]
     [Range(0f, 1f)] public float volume = 1f;
+    [SerializeField]
     [Range(0f, 2f)] public float pitch = 1f;
 
-    bool mStarted = false;
-
-    void Awake()
+    public override void OnPointerClick(PointerEventData eventData)
     {
-        if(!mStarted)
-        {
-            mStarted = true;
-            var ev = UI_Event.Get(this);
-            ev.onClick += OnClick;
-        }
+        base.OnPointerClick(eventData);
+        OnClick();
     }
 
-    void OnClick (PointerEventData eventData , UI_Event go)
+    void OnClick ()
     {
         if(audioClip != null)
         {

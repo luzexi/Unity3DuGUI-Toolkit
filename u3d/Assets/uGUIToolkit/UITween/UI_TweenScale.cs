@@ -24,7 +24,7 @@ public class UI_TweenScale : UI_Tween
     float m_fStartTime; //start time
     EasingFunction m_delEase;   //delegate function
 
-    void Awake()
+    void Start()
     {
         if(tweenTarget == null) tweenTarget = this.gameObject;
         this.m_fStartTime = Time.realtimeSinceStartup;
