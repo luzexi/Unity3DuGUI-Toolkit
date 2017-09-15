@@ -14,8 +14,8 @@ public class UI_ButtonPlaySoundEditor : Editor
 		serializedObject.Update();
 		UI_ButtonPlaySound sound = target as UI_ButtonPlaySound;
 		EditorGUILayout.PropertyField(serializedObject.FindProperty("audioClip"));
-		sound.volume = EditorGUILayout.Slider("Volume",sound.volume,0,1);
-		sound.pitch = EditorGUILayout.Slider("Pitch",sound.pitch,0,2);
+		// sound.volume = EditorGUILayout.Slider("Volume",sound.volume,0,1);
+		// sound.pitch = EditorGUILayout.Slider("Pitch",sound.pitch,0,2);
 		serializedObject.ApplyModifiedProperties();
 		// grid.Dir = (UI_ListGrid.DIR)EditorGUILayout.EnumPopup("Direction",grid.Dir);
 

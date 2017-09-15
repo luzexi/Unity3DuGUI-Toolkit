@@ -1,73 +1,61 @@
-﻿// #define GAME_MEDIA
-
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
-#if GAME_MEDIA
-using Game.Media;
-#endif
 
 /// <summary>
 /// sound component
 /// </summary>
-[AddComponentMenu("uGUI/UI_Button PlaySound")]
+[AddComponentMenu("UI/Button PlaySound")]
 public class UI_ButtonPlaySound : UI_Event
 {
     [SerializeField]
     public AudioClip audioClip;
-    [SerializeField]
-    [Range(0f, 1f)] public float volume = 1f;
-    [SerializeField]
-    [Range(0f, 2f)] public float pitch = 1f;
+    private  AudioClip audioClipNew = null;
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        base.OnPointerClick(eventData);
-        OnClick();
+        // base.OnPointerClick(eventData);
+        // OnClick();
+        if(mAnyMove) return;
+        if(sDisableEvent2 && !mIgnoreDisable) return;
+        if(sDisableEvent && !mIgnoreDisable) return;
+        sIsEvent = true;
+        if(onClick != null)
+        {
+            // sIsEvent = true;
+            onClick(eventData , this);
+            OnClick();
+        }
+    }
+
+    public void RefreshSetAudioClip(AudioClip clip)
+    {
+        audioClipNew = clip;
     }
 
     void OnClick ()
     {
         if(audioClip != null)
         {
-#if GAME_MEDIA
-            MediaMgr.sInstance.PlaySE(audioClip);
-#else
-            PlaySound(audioClip , volume , pitch);
-#endif
+            if (audioClipNew == null)
+            {
+                PlaySound(audioClip);
+            }
+            else
+            {
+                PlaySound(audioClipNew);
+                audioClipNew = null;
+            }
         }
     }
 
-    static AudioListener mListener;
-    static public AudioSource PlaySound (AudioClip clip, float volume, float pitch)
+    static public AudioSource PlaySound (AudioClip clip)
     {
-        // volume *= soundVolume;
-
-        if (clip != null && volume > 0.01f)
-        {
-            if (mListener == null || !(mListener.enabled && mListener.gameObject.activeSelf))
-            {
-                mListener = GameObject.FindObjectOfType(typeof(AudioListener)) as AudioListener;
-
-                if (mListener == null)
-                {
-                    Camera cam = Camera.main;
-                    if (cam == null) cam = GameObject.FindObjectOfType(typeof(Camera)) as Camera;
-                    if (cam != null) mListener = cam.gameObject.AddComponent<AudioListener>();
-                }
-            }
-
-            if (mListener != null && mListener.enabled && mListener.gameObject.activeSelf)
-            {
-                AudioSource source = mListener.GetComponent<AudioSource>();
-                if (source == null) source = mListener.gameObject.AddComponent<AudioSource>();
-                source.pitch = pitch;
-                source.PlayOneShot(clip, volume);
-                return source;
-            }
-        }
+        // if(clip == null || GlobalObject.soundPlayer == null)
+        // {
+        //     return null;
+        // }
+        // GlobalObject.soundPlayer.Play(clip);
         return null;
     }
 }

@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 
 Shader "Custom/UI/UVAnimation"
 {
@@ -38,7 +40,7 @@ Shader "Custom/UI/UVAnimation"
 			v2f vert(appdata_base v)
 			{			
 				v2f o;
-				o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+				o.pos = UnityObjectToClipPos(v.vertex);
 				float floorModTime = floor(fmod( _Time.y  * _Fps, _Total));
 				float uIdx = fmod(floorModTime , _Cols);
 				float vIdx = _Rows - 1 - floor(floorModTime / _Rows);
