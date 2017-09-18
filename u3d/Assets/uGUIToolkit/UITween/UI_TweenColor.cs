@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 
 //ui tween color
-[AddComponentMenu("uGUI/Tween/UI_Tween Color")]
+[AddComponentMenu("UI/Tween/UI_Tween Color")]
 public class UI_TweenColor : UI_Tween
 {
     public Color from = Color.white;

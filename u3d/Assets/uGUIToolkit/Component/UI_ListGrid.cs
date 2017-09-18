@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[AddComponentMenu("uGUI/UI_ListGrid")]
+[AddComponentMenu("UI/UI ListGrid")]
 public class UI_ListGrid : MonoBehaviour
 {
 	public enum DIR

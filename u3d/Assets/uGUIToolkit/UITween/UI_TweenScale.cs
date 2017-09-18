@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 
 //ui tween scale
-[AddComponentMenu("uGUI/Tween/UI_Tween Scale")]
+[AddComponentMenu("UI/Tween/UI_Tween Scale")]
 public class UI_TweenScale : UI_Tween
 {
     public bool fromnow = true;

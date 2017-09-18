@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[AddComponentMenu("uGUI/UI Follow3D")]
+[AddComponentMenu("UI/UI Follow3D")]
 /**
  * A UILabel will follow a 3D position in 2D space. Simply attach to the Element2D's Game Object and reference a target Transform, and you're good!
  * Currently only uses the Main Camera's screen coordinates.

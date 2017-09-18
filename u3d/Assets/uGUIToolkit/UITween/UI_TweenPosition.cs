@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 
 //ui tween position
-[AddComponentMenu("uGUI/Tween/UI_Tween Position")]
+[AddComponentMenu("UI/Tween/UI_Tween Position")]
 public class UI_TweenPosition : UI_Tween
 {
     public bool fromnow = true;

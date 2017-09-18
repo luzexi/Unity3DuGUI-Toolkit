@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 
 
-[AddComponentMenu("uGUI/UI_Scroll_Loop")]
+[AddComponentMenu("UI/UI Scroll_Loop")]
 public class UI_Scroll_Loop : MonoBehaviour
 {
     public enum Movement

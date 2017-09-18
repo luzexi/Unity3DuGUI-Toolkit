@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 // [AddComponentMenu("UI/Animation/Timescale Independent Animation")]
@@ -11,6 +12,10 @@ using System.Collections;
 */
 public class TimescaleIndependentAnimation : MonoBehaviour 
 {	
+	protected Action mOnAnimationBegin;
+	protected Action mOnAnimationStop;
+	protected Action mOnAnimationComplete;
+
 	internal float _accumulatedTime = 0F;
 	public AnimationState _currentState;
 	protected bool _animating = false;
@@ -26,7 +31,8 @@ public class TimescaleIndependentAnimation : MonoBehaviour
 	Note: The provided AnimationState will retain the wrapMode defined in its creation.
 		The hook OnAnimationBegin() is called from this function.
 	*/
-	public void Play(string state)
+	public void Play(string state,Action _onAnimationComplete = null,
+		Action _onAnimationStop = null, Action _onAnimationBegin = null)
 	{
 		if (_currentState != null)
 		{
@@ -43,6 +49,10 @@ public class TimescaleIndependentAnimation : MonoBehaviour
 		
 		_currentState = GetComponent<Animation>()[state];
 		if(!_currentState) return;
+
+		mOnAnimationComplete = _onAnimationComplete;
+		mOnAnimationBegin = _onAnimationBegin;
+		mOnAnimationStop = _onAnimationStop;
 		
 		_currentState.weight = 1F;
 		_currentState.wrapMode = _currentState.clip.wrapMode;//_currentState.clip.wrapMode;
@@ -181,6 +191,11 @@ public class TimescaleIndependentAnimation : MonoBehaviour
 	*/
 	protected virtual void OnAnimationBegin()
 	{	
+		if(mOnAnimationBegin != null)
+		{
+			mOnAnimationBegin();
+			mOnAnimationBegin = null;
+		}
 	}
 	
 	/**
@@ -190,6 +205,11 @@ public class TimescaleIndependentAnimation : MonoBehaviour
 	*/
 	protected virtual void OnAnimationStop()
 	{	
+		if(mOnAnimationStop != null)
+		{
+			mOnAnimationStop();
+			mOnAnimationStop = null;
+		}
 	}
 	
 	/**
@@ -201,6 +221,11 @@ public class TimescaleIndependentAnimation : MonoBehaviour
 	*/
 	protected virtual void OnAnimationComplete()
 	{
+		if(mOnAnimationComplete != null)
+		{
+			mOnAnimationComplete();
+			mOnAnimationComplete = null;
+		}
 	}
 	
 	/**

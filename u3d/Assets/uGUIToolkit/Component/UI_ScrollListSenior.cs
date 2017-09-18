@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 
 
-[AddComponentMenu("uGUI/UI_ScrollListSenior")]
+[AddComponentMenu("UI/UI ScrollListSenior")]
 [RequireComponent (typeof(UI_ListGrid))]
 public class UI_ScrollListSenior : MonoBehaviour
 {

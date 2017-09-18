@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// sound component
 /// </summary>
-[AddComponentMenu("UI/Button PlaySound")]
+[AddComponentMenu("UI/UI Button PlaySound")]
 public class UI_ButtonPlaySound : UI_Event
 {
     [SerializeField]

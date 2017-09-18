@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 
 //ui tween group alpha
-[AddComponentMenu("uGUI/Tween/UI_TweenGroup")]
+[AddComponentMenu("UI/Tween/UI_TweenGroup")]
 [RequireComponent (typeof (CanvasGroup))]
 public class UI_TweenGroup : UI_Tween
 {

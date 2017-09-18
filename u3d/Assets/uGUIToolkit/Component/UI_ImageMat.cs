@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 
 [RequireComponent(typeof(Image))]
-[AddComponentMenu("UI/Image Material")]
+[AddComponentMenu("UI/UI Image Material")]
 public class UI_ImageMat : MonoBehaviour
 {
 	private Image mImage;
