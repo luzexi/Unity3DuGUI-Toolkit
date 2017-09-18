@@ -1,11 +1,11 @@
 ﻿# Unity3DuGUI-Toolkit
-In Unity3D 5.3.2+ , the uGUI has not enough compontent to build GUI system. So this repository can improve it .
+In Unity3D 5.6.2+ , the uGUI has not enough compontent to build GUI system. So this repository can improve it .
 
 # uGUI Tool kit
 ---------------------
 
 ### 是什么(What is it)
-* Unity3D 5.3.2+ 以后的版本中 uGUI为主导的gui系统，组件并不齐全，以至于用起来非常费力。
+* Unity3D 5.6.2+ 以后的版本中 uGUI为主导的gui系统，组件并不齐全，以至于用起来非常费力。
 * 这个Repository 是对uGUI的一个工具箱，用来帮助那些想用uGUI打造GUI系统的开发者们。
 
 ### 内容介绍(Introduce)
