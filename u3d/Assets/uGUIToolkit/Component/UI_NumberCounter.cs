@@ -6,7 +6,7 @@ using System.Collections;
 
 [AddComponentMenu("UI/UI Number Count")]
 [RequireComponent (typeof(UnityEngine.UI.Text))]
-public class UI_NumberCount : MonoBehaviour {
+public class UI_NumberCounter : MonoBehaviour {
 
     protected UnityEngine.UI.Text m_DisplayText;
 

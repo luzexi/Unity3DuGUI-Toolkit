@@ -10,19 +10,25 @@ In Unity3D 5.6.2+ , the uGUI has not enough compontent to build GUI system. So t
 
 ### 内容介绍(Introduce)
 	UI_Animator
-	ui animator component. This script can improve animation when u use animator to perform.
+	Animator API.对UI动画的封装
 
-	UI_CountDisplayer
+	UI_NumberCounter
 	Count number from small to big.
 
 	UI_Follow3D
-	make the ui follow 3d whatever it move to any place.
+	Make the ui follow 3d whatever it move to any place.
 
 	UI_ButtonPlaySound
-	It can help you play sound when you click button.
+	Help you play sound when you click button.
+
+	UI_ImageMat, UI_RawImageMat
+	在动画里改变alpha时会对mesh重绘，导致效率降低，这个加动画来帮助改进效率。
 
 	UI_FontNum
-	It can use texture to display number whatever you put in several number in it.
+	Use texture to display number.
+
+	UI_GameCanvas
+	帮助你设置Canvas
 
 	UI_ListGrid
 	Look like LayoutGrid, and the same function. maybe i will remove it later.
