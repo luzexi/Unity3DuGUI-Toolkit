@@ -56,24 +56,28 @@ public class ScreenHandler: MonoBehaviour
 	// no animated close screen
 	public virtual void CloseScreen()
 	{
+		if(closeHandler != null)
+		{
+			closeHandler(this);
+		}
 		state = ScreenState.Closed;
 	}
 	
-	public virtual void CollapseScreen()
-	{
-		if (state == ScreenState.Open)
-		{
-			state = ScreenState.Collapsed;
-		}
-	}
+	// public virtual void CollapseScreen()
+	// {
+	// 	if (state == ScreenState.Open)
+	// 	{
+	// 		state = ScreenState.Collapsed;
+	// 	}
+	// }
 	
-	public virtual void ExpandScreen()
-	{
-		if (state == ScreenState.Collapsed)
-		{
-			state = ScreenState.Open;
-		}
-	}
+	// public virtual void ExpandScreen()
+	// {
+	// 	if (state == ScreenState.Collapsed)
+	// 	{
+	// 		state = ScreenState.Open;
+	// 	}
+	// }
 
 	public virtual void SetActive(bool _active)
 	{
