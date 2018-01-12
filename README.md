@@ -1,5 +1,5 @@
 ﻿# Unity3DuGUI-Toolkit
-In Unity3D 5.6.2+ , the uGUI has not enough compontent to build GUI system. So this repository can improve it .
+In Unity3D 5.3.2+ , the uGUI has not enough compontent to build GUI system. So this repository can improve it .
 
 # uGUI Tool kit
 ---------------------
