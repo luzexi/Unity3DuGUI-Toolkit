@@ -6,7 +6,6 @@ using System;
 
 public class ScreenBaseHandler : MonoBehaviour
 {
-	public bool m_DestroyOnClose = false;
     protected bool m_Initialized = false; // Prevent unintentional, double initialization.
     private bool mIsShow = false;
 	public bool IsShow
@@ -36,7 +35,14 @@ public class ScreenBaseHandler : MonoBehaviour
         m_Initialized = true;
 	}
 
-    public virtual void HideScreen()
+    public virtual void OpenScreen()
+    {
+        mIsShow = true;
+        if (OnShowScreen != null)
+            OnShowScreen(this);
+    }
+
+    public virtual void CloseScreen()
     {
         mIsShow = false;
 
@@ -45,13 +51,6 @@ public class ScreenBaseHandler : MonoBehaviour
 
         if (OnHideScreen != null)
             OnHideScreen(this);
-    }
-
-    public virtual void ShowScreen()
-    {
-        mIsShow = true;
-        if (OnShowScreen != null)
-            OnShowScreen(this);
     }
 
 }

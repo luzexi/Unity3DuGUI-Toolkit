@@ -48,13 +48,9 @@ public class MenuManager
             
             T result = obj.GetComponent<T>();
 
-            if (result.m_DestroyOnClose)
-                result.OnCloseAndDestroy += RemoveMenu;
-            else
-                result.OnCloseAndDestroy += DisableMenu;
+            result.OnCloseAndDestroy = RemoveMenu;
 
             _dicScreens.Add(key, result);
-            // result.Init();
             return result;
         }
 
@@ -70,11 +66,6 @@ public class MenuManager
             _dicScreens.Remove(key);
         }
         GameObject.Destroy(_handler.gameObject);
-    }
-
-    void DisableMenu(ScreenBaseHandler _handler)
-    {
-        _handler.gameObject.SetActive(false);
     }
 
     public T FindMenu<T>() where T : ScreenBaseHandler

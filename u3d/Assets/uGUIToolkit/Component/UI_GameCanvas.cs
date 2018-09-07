@@ -25,8 +25,8 @@ public class UI_GameCanvas : MonoBehaviour {
 	protected static Camera s_OverlayUICam;
 	protected static Camera s_UICam;
 
-    protected Canvas m_Canvas;
-    protected CanvasScaler m_CanvasScaler;
+    public Canvas m_Canvas;
+    public CanvasScaler m_CanvasScaler;
 
 
 
@@ -52,7 +52,9 @@ public class UI_GameCanvas : MonoBehaviour {
 				s_UICam = GameObject.Find("UICam").GetComponent<Camera>();
 		}
 
-        m_Canvas = GetComponent<Canvas>();
+		if(m_Canvas == null)
+        	m_Canvas = GetComponent<Canvas>();
+        if(m_CanvasScaler == null)
         m_CanvasScaler = GetComponent<CanvasScaler>();
 
         if (m_Canvas == null) Debug.LogError("KumaCanvas requires a Canvas component. Please fix in editor.");
