@@ -48,7 +48,7 @@ public class MenuManager
             
             T result = obj.GetComponent<T>();
 
-            result.OnCloseAndDestroy = RemoveMenu;
+            result.OnCloseAndDestroy += RemoveMenu;
 
             _dicScreens.Add(key, result);
             return result;
