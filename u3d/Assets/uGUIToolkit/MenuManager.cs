@@ -82,9 +82,6 @@ public class MenuManager
 
     protected virtual GameObject GetPrefabFromType(System.Type _type)
     {
-        if (_type.Equals(typeof(ScreenBaseHandler)))
-            return Resources.Load("Prefabs/ExampleUI") as GameObject;
-
-		return null;
+        return Resources.Load(_type.ToString()) as GameObject;
     }
 }

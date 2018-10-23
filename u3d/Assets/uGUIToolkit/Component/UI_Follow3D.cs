@@ -139,8 +139,8 @@ public class UI_Follow3D : MonoBehaviour
 			screenpos = _cam3d.WorldToViewportPoint(target.position + offset3D);
 
 		// Debug.LogError("follow " + screenpos);
-		screenpos.x = screenpos.x * 960 - 480;
-		screenpos.y = screenpos.y * 640 - 320;
+		screenpos.x = screenpos.x * UIDefine.UI_SCREEN_WIDTH - UIDefine.UI_SCREEN_WIDTH/2f;
+		screenpos.y = screenpos.y * UIDefine.UI_SCREEN_HEIGHT - UIDefine.UI_SCREEN_HEIGHT/2f;
 		// Debug.LogError("follow " + screenpos);
 		
 		_transform.localPosition = new Vector3(screenpos.x + pixelOffset.x, screenpos.y + pixelOffset.y, _transform.localPosition.z);
