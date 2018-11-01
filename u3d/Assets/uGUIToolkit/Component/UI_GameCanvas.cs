@@ -83,15 +83,24 @@ public class UI_GameCanvas : MonoBehaviour {
         	Debug.LogError("screenMatchMode maybe error please check");
         	check = false;
         }
-        if(m_CanvasScaler.matchWidthOrHeight != 0.5f)
-        {
-        	Debug.LogError("matchWidthOrHeight maybe error please check");
-        	check = false;
-        }
+        // if(m_CanvasScaler.matchWidthOrHeight != 0.5f)
+        // {
+        // 	Debug.LogError("matchWidthOrHeight maybe error please check");
+        // 	check = false;
+        // }
         if(m_CanvasScaler.referenceResolution != mResolution)
         {
         	Debug.LogError("referenceResolution maybe error please check");
         	check = false;
+        }
+
+        if(UIDefine.SCREEN_WIDTH*1f/UIDefine.SCREEN_HEIGHT > Screen.width*1f/Screen.height)
+        {
+            m_CanvasScaler.matchWidthOrHeight = 0;
+        }
+        else
+        {
+            m_CanvasScaler.matchWidthOrHeight = 1;
         }
   //       m_CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
   //       m_CanvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
