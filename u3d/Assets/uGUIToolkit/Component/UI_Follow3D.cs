@@ -9,8 +9,12 @@ using System.Collections;
 public class UI_Follow3D : MonoBehaviour
 {	
 	private Transform target;
+	private Canvas mCanvas;
 	private Camera _cam3d;
 	private Transform _transform;
+
+	private int UI_SCREEN_WIDTH = 1920;
+	private int UI_SCREEN_HEIGHT = 1080;
 		
 	public Vector2 pixelOffset = Vector2.zero;
 	public Vector3 offset3D = Vector3.zero;
@@ -29,6 +33,7 @@ public class UI_Follow3D : MonoBehaviour
 	
 	Vector3 lastTargePosition = Vector3.zero;
 	Vector3 lastCameraPosition = Vector3.zero;
+	Quaternion lastCameraRotation = Quaternion.identity;
 	float lastScreenPosZ = 0;
 	
 	Transform _camTransform;
@@ -105,13 +110,22 @@ public class UI_Follow3D : MonoBehaviour
 			return _cam3d;
 		}
 	}
+
+	public void SetCanvas(Canvas _canvas)
+	{
+		mCanvas = _canvas;
+		RectTransform _rect_transfor = _canvas.GetComponent<RectTransform>();
+		UI_SCREEN_WIDTH = (int)_rect_transfor.sizeDelta.x;
+		UI_SCREEN_HEIGHT = (int)_rect_transfor.sizeDelta.y;
+	}
 	
 	// Update is called once per frame
 	void LateUpdate() 
 	{
 		if((target == null && !targetIsVector) || !_camTransform) return;
 		
-		if (lastCameraPosition == _camTransform.position)
+		if (lastCameraPosition == _camTransform.position
+			&& lastCameraRotation == _camTransform.rotation)
 		{
 		    if (targetIsVector)
 			{
@@ -131,6 +145,7 @@ public class UI_Follow3D : MonoBehaviour
 		else
 		{
 			lastCameraPosition = _camTransform.position;
+			lastCameraRotation = _camTransform.rotation;
 		}
 		
 		if (targetIsVector)
@@ -139,8 +154,8 @@ public class UI_Follow3D : MonoBehaviour
 			screenpos = _cam3d.WorldToViewportPoint(target.position + offset3D);
 
 		// Debug.LogError("follow " + screenpos);
-		screenpos.x = screenpos.x * UIDefine.UI_SCREEN_WIDTH - UIDefine.UI_SCREEN_WIDTH/2f;
-		screenpos.y = screenpos.y * UIDefine.UI_SCREEN_HEIGHT - UIDefine.UI_SCREEN_HEIGHT/2f;
+		screenpos.x = screenpos.x * UI_SCREEN_WIDTH - UI_SCREEN_WIDTH/2f;
+		screenpos.y = screenpos.y * UI_SCREEN_HEIGHT - UI_SCREEN_HEIGHT/2f;
 		// Debug.LogError("follow " + screenpos);
 		
 		_transform.localPosition = new Vector3(screenpos.x + pixelOffset.x, screenpos.y + pixelOffset.y, _transform.localPosition.z);
