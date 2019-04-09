@@ -10,11 +10,12 @@ public class UI_Follow3D : MonoBehaviour
 {	
 	private Transform target;
 	private Canvas mCanvas;
+	private RectTransform mCanvasRectTransform;
 	private Camera _cam3d;
-	private Transform _transform;
+	public Transform BodyTransform;
 
-	private int UI_SCREEN_WIDTH = 1920;
-	private int UI_SCREEN_HEIGHT = 1080;
+	// private float UI_SCREEN_WIDTH = 1920;
+	// private float UI_SCREEN_HEIGHT = 1080;
 		
 	public Vector2 pixelOffset = Vector2.zero;
 	public Vector3 offset3D = Vector3.zero;
@@ -40,9 +41,7 @@ public class UI_Follow3D : MonoBehaviour
 	
 	// Use this for initialization
 	void Awake() 
-	{
-		_transform = transform;
-		
+	{	
 		if (ScaleMinDistance - ScaleOneDistance > 0)
 		{
 			scaleFactor = (1 - minScale) / (ScaleMinDistance - ScaleOneDistance);
@@ -51,6 +50,23 @@ public class UI_Follow3D : MonoBehaviour
 		{
 			_camTransform = _cam3d.transform;
 		}
+
+		Transform trans = transform;
+		for(;trans != null ; trans = trans.parent)
+		{
+			mCanvas = trans.gameObject.GetComponent<Canvas>();
+			if(mCanvas != null)
+			{
+				SetCanvas(mCanvas);
+				break;
+			}
+		}
+		// visible = false;
+	}
+
+	void Start()
+	{
+		// visible = true;
 	}
 	
 	public bool visible
@@ -114,9 +130,9 @@ public class UI_Follow3D : MonoBehaviour
 	public void SetCanvas(Canvas _canvas)
 	{
 		mCanvas = _canvas;
-		RectTransform _rect_transfor = _canvas.GetComponent<RectTransform>();
-		UI_SCREEN_WIDTH = (int)_rect_transfor.sizeDelta.x;
-		UI_SCREEN_HEIGHT = (int)_rect_transfor.sizeDelta.y;
+		mCanvasRectTransform = _canvas.GetComponent<RectTransform>();
+		// UI_SCREEN_WIDTH = mCanvasRectTransform.sizeDelta.x;
+		// UI_SCREEN_HEIGHT = mCanvasRectTransform.sizeDelta.y;
 	}
 	
 	// Update is called once per frame
@@ -154,11 +170,11 @@ public class UI_Follow3D : MonoBehaviour
 			screenpos = _cam3d.WorldToViewportPoint(target.position + offset3D);
 
 		// Debug.LogError("follow " + screenpos);
-		screenpos.x = screenpos.x * UI_SCREEN_WIDTH - UI_SCREEN_WIDTH/2f;
-		screenpos.y = screenpos.y * UI_SCREEN_HEIGHT - UI_SCREEN_HEIGHT/2f;
+		screenpos.x = screenpos.x * mCanvasRectTransform.sizeDelta.x - mCanvasRectTransform.sizeDelta.x/2f;
+		screenpos.y = screenpos.y * mCanvasRectTransform.sizeDelta.y - mCanvasRectTransform.sizeDelta.y/2f;
 		// Debug.LogError("follow " + screenpos);
 		
-		_transform.localPosition = new Vector3(screenpos.x + pixelOffset.x, screenpos.y + pixelOffset.y, _transform.localPosition.z);
+		transform.localPosition = new Vector3(screenpos.x + pixelOffset.x, screenpos.y + pixelOffset.y, transform.localPosition.z);
 		//print(screenpos + "|" + _transform.position);
 		if (scaleInWorld)
 		{
@@ -167,17 +183,35 @@ public class UI_Follow3D : MonoBehaviour
 				lastScreenPosZ = screenpos.z;
 				if (screenpos.z < ScaleOneDistance)
 				{
-					_transform.localScale = Vector3.one;
+					transform.localScale = Vector3.one;
 				}
 				else if (screenpos.z > ScaleMinDistance)
 				{
-					_transform.localScale = new Vector3(minScale, minScale, minScale);
+					transform.localScale = new Vector3(minScale, minScale, minScale);
 				}
 				else if (ScaleMinDistance - ScaleOneDistance > 0)
 				{
 					float s = (ScaleMinDistance - screenpos.z) * scaleFactor + minScale;
-					_transform.localScale = new Vector3(s, s, s);
+					transform.localScale = new Vector3(s, s, s);
 				}
+			}
+		}
+
+		if(transform.localPosition.x > mCanvasRectTransform.sizeDelta.x/2f
+			|| transform.localPosition.x < mCanvasRectTransform.sizeDelta.x/-2f
+			|| transform.localPosition.y > mCanvasRectTransform.sizeDelta.y/2f
+			|| transform.localPosition.y < mCanvasRectTransform.sizeDelta.y/-2f)
+		{
+			if(BodyTransform != null &&BodyTransform.gameObject.activeSelf)
+			{
+				BodyTransform.gameObject.SetActive(false);
+			}
+		}
+		else
+		{
+			if(BodyTransform != null && !BodyTransform.gameObject.activeSelf)
+			{
+				BodyTransform.gameObject.SetActive(true);
 			}
 		}
 	}
@@ -191,8 +225,8 @@ public class UI_Follow3D : MonoBehaviour
 		#endif
 	}
 	
-	public Transform GetTransform()
-	{
-		return _transform;
-	}
+	// public Transform GetTransform()
+	// {
+	// 	return BodyTransform;
+	// }
 }

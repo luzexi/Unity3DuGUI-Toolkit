@@ -16,6 +16,7 @@ public class UI_FontNum : MonoBehaviour
     public Sprite[] Num = new Sprite[10];
     public int interval = 2;
     public int Number = 9999;
+    public Vector2 Size;
 
     private List<GameObject> m_lstObj = new List<GameObject>();
 
@@ -26,8 +27,17 @@ public class UI_FontNum : MonoBehaviour
 
     public void Setup( int num )
     {
+        List<Transform> childs = new List<Transform> ();
+        foreach (Transform child in gameObject.transform)
+        {
+            childs.Add (child);
+        }
+        for (int i = 0; i < childs.Count; i++)
+        {
+            Destroy(childs[i].gameObject);
+        }
+        m_lstObj.Clear();
         List<int> lst = new List<int>();
-
         do
         {
             int tmp_num = num%10;
@@ -67,10 +77,11 @@ public class UI_FontNum : MonoBehaviour
             }
 
             tmpImg.sprite = Num[lst[i]];
-            tmpImg.SetNativeSize();
+            // tmpImg.SetNativeSize();
+            tmpImg.gameObject.GetComponent<RectTransform>().sizeDelta = Size;
 
             if(i>0) x+=interval;
-            x = x + Num[lst[i]].textureRect.width;
+            x = x + Size.x;
             tmpImg.transform.localPosition += new Vector3(x,0,0);
         }
     }
